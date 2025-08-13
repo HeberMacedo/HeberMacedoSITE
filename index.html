@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Health One — Tire a foto do produto e entenda o que você consome</title>
+  <meta name="description" content="Health One: tire a foto do produto. Análise do rótulo, alertas de alergênicos e informações claras para escolher melhor." />
+  <style>
+    /* ---------- Base / Paleta ---------- */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', Arial, system-ui, sans-serif; color: #0f172a; }
+    img, svg { display: block; max-width: 100%; height: auto; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; cursor: pointer; }
+
+    :root{
+      --text: #0f172a;
+      --muted: #475569;
+      --line: #e2e8f0;
+
+      /* olive */
+      --brand:     #819270;
+      --brand-600: #67755a;
+      --brand-700: #5a664e;
+      --brand-400: #a7b39b;
+      --brand-200: #d9ded4;
+      --brand-50:  #f2f4f1;
+
+      --radius: 18px;
+      --shadow: 0 14px 40px rgba(2,6,23,.16);
+      --shadow-soft: 0 8px 24px rgba(2,6,23,.10);
+    }
+
+    /* ---------- Background com blur ---------- */
+    body{
+      background:
+        url('https://images.unsplash.com/photo-1586201375761-83865001e31b?auto=format&fit=crop&w=2400&q=70')
+        no-repeat center/cover fixed;
+    }
+    body::before{
+      content:""; position: fixed; inset: 0;
+      background: linear-gradient(180deg, rgba(129,146,112,.66), rgba(129,146,112,.66));
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: -1;
+    }
+
+    /* ---------- Layout ---------- */
+    .container{ width:min(1200px, 92%); margin-inline:auto; }
+    .grid{ display:grid; gap:1.25rem; }
+    .section{ padding: clamp(2.5rem, 6vw, 5rem) 0; }
+    .card{ border:1px solid var(--line); border-radius:var(--radius); padding:1.4rem; background:rgba(255,255,255,.94); box-shadow: var(--shadow-soft); }
+    .muted{ color: var(--muted); }
+    .chip{ display:inline-flex; align-items:center; gap:.5rem; padding:.4rem .75rem; border-radius:999px; background:var(--brand-50); color:var(--brand-700); font-weight:700; font-size:.85rem; }
+
+    .btn{ display:inline-flex; align-items:center; justify-content:center; gap:.6rem; padding:1rem 1.1rem; border-radius:14px; font-weight:800; border:1px solid var(--line); background:#fff; transition: translate .2s ease, box-shadow .2s ease; }
+    .btn:hover{ translate:0 -1px; box-shadow:var(--shadow-soft); }
+    .btn--brand{ background:var(--brand); color:#fff; border-color:transparent; }
+    .btn--ghost{ background:transparent; color:#fff; border-color:rgba(255,255,255,.35); }
+
+    /* ---------- Header ---------- */
+    header{ position:sticky; top:0; z-index:50; }
+    .nav{
+      display:flex; align-items:center; justify-content:space-between; min-height:76px;
+      padding: .25rem 0; margin-top:.25rem;
+      backdrop-filter: blur(10px) saturate(160%);
+      -webkit-backdrop-filter: blur(10px) saturate(160%);
+      background: rgba(129,146,112,.72);
+      color: #fff;
+      box-shadow: 0 10px 24px rgba(0,0,0,.12);
+      border-bottom: 1px solid rgba(255,255,255,.15);
+      border-radius: 0 0 18px 18px;
+    }
+    .brand{ display:flex; align-items:center; gap:.6rem; font-weight:900; letter-spacing:.2px; font-size:1.1rem; }
+    .logo{ width:30px; height:30px; border-radius:10px; background: conic-gradient(from 180deg, var(--brand), var(--brand-400), var(--brand-50)); box-shadow: inset 0 0 0 3px rgba(255,255,255,.9); border:1px solid rgba(255,255,255,.5); }
+    .navlinks{ display:flex; gap:1rem; align-items:center; }
+    .navlinks a{ padding:.55rem .8rem; border-radius:10px; color:#eef3ec; font-weight:700; }
+    .navlinks a:hover{ background: rgba(255,255,255,.14); }
+
+    /* ---------- Hero ---------- */
+    .hero{ display:grid; grid-template-columns: 1.06fr 0.94fr; gap:2rem; align-items:center; }
+    .hero h1{ font-size: clamp(2.1rem, 5.4vw, 3.2rem); line-height:1.08; margin: .6rem 0 1rem; color:#0b1a10; }
+    .hero p{ font-size: clamp(1rem, 2.2vw, 1.18rem); color:#233125; }
+    .badge{ display:inline-flex; align-items:center; gap:.5rem; padding:.5rem .75rem; background:rgba(255,255,255,.6); border:1px solid var(--line); border-radius:12px; font-weight:800; }
+
+    /* Phone mockup (com foto de salgadinho dentro) */
+    .phone{ aspect-ratio: 9/19.5; width:min(440px, 90%); justify-self:end; border:10px solid #0b1220; border-radius:36px; padding:.75rem; background:#0b1220; box-shadow: 0 30px 60px rgba(0,0,0,.35); position:relative; overflow:hidden; }
+    .phone::after{ content:""; position:absolute; inset:8px; border-radius:28px; border:1px solid rgba(255,255,255,.08); pointer-events:none; }
+    .screen{ background:#000; height:100%; border-radius:22px; display:grid; grid-template-rows:auto 1fr; overflow:hidden; }
+    .screen .topbar{ display:flex; align-items:center; justify-content:space-between; padding:12px 14px; color:#e2e8f0; background:linear-gradient(180deg, #09121a, #0b1220); }
+    .camview{ position:relative; overflow:hidden; }
+    .camview img{ width:100%; height:100%; object-fit:cover; filter: saturate(1.05) contrast(1.02); }
+    .focusbox{ position:absolute; inset:14% 10%; border:2px dashed rgba(255,255,255,.75); border-radius:16px; box-shadow: inset 0 0 0 2px rgba(0,0,0,.18); }
+    .snap{ position:absolute; bottom:16px; left:0; right:0; display:grid; place-items:center; }
+    .snap .btnsnap{ width:62px; height:62px; border-radius:999px; background:#fff; border:6px solid rgba(255,255,255,.25); }
+
+    /* Sections */
+    .hiw{ grid-template-columns: repeat(3, 1fr); }
+    .features{ grid-template-columns: repeat(4, 1fr); }
+    .testimonials{ grid-template-columns: repeat(3, 1fr); }
+    .num{ width:34px; height:34px; border-radius:999px; background:var(--brand-50); color:var(--brand-700); display:grid; place-items:center; font-weight:800; }
+
+    /* Footer */
+    .footbar{ background: rgba(129,146,112,.82); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); padding: 1.4rem 0; border-top:1px solid rgba(255,255,255,.18); color:#eef3ec; }
+
+    /* Responsive */
+    @media (max-width: 960px){
+      .hero{ grid-template-columns: 1fr; }
+      .phone{ justify-self:center; width:min(420px, 80%); }
+      .hiw, .features, .testimonials{ grid-template-columns: 1fr; }
+      .navlinks{ display:none; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container nav">
+      <a class="brand" href="#top"><span class="logo"></span><span style="color:#fff">Health One</span></a>
+      <nav class="navlinks">
+        <a href="#como-funciona">Como funciona</a>
+        <a href="#beneficios">Benefícios</a>
+        <a href="#depoimentos">Depoimentos</a>
+        <a href="#baixar" class="btn btn--ghost">Baixar o app</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <main id="top" class="container section">
+    <section class="hero">
+      <div class="card">
+        <span class="chip">Foto do produto</span>
+        <h1>Tire a foto do produto.<br/>Receba informações claras e alertas úteis.</h1>
+        <p>O Health One funciona por <strong>foto do rótulo</strong>: você fotografa e nós traduzimos o conteúdo para linguagem simples — sem propaganda, sem enrolação.</p>
+        <div class="grid" style="grid-template-columns:auto auto; gap:.75rem; margin-top:.5rem;">
+          <a class="btn btn--brand" href="#baixar">App Store</a>
+          <a class="btn" href="#baixar">Google Play</a>
+        </div>
+        <div class="grid" style="grid-template-columns:auto auto auto; gap:.5rem; margin-top:1rem;">
+          <span class="badge">Sem anúncios</span>
+          <span class="badge">Privacidade em 1º lugar</span>
+          <span class="badge">Leve e rápido</span>
+        </div>
+      </div>
+
+      <!-- Phone taking a photo of a snack -->
+      <div class="phone" aria-hidden="true">
+        <div class="screen">
+          <div class="topbar"><span style="font-weight:800; letter-spacing:.3px;">Câmera</span><span style="opacity:.8;">•••</span></div>
+          <div class="camview">
+            <!-- Imagem de uma mão fotografando um snack (genérica, Unsplash) -->
+            <img alt="Mão fotografando um pacote de salgadinho" src="https://images.unsplash.com/photo-1598373182133-52452f7691ef?auto=format&fit=crop&w=870&q=80">
+            <div class="focusbox"></div>
+            <div class="snap"><div class="btnsnap" title="Capturar"></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Como funciona -->
+    <section id="como-funciona" class="section">
+      <div class="grid hiw">
+        <div class="card">
+          <div class="num">1</div>
+          <h3>Tire a foto</h3>
+          <p class="muted">Aponte a câmera e fotografe os ingredientes do rótulo. Luz natural ajuda muito.</p>
+        </div>
+        <div class="card">
+          <div class="num">2</div>
+          <h3>Nós analisamos</h3>
+          <p class="muted">Extraímos informações essenciais e destacamos itens sensíveis (como possíveis alergênicos).</p>
+        </div>
+        <div class="card">
+          <div class="num">3</div>
+          <h3>Decida melhor</h3>
+          <p class="muted">Entenda o produto rapidamente e veja alternativas quando fizer sentido.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Benefícios -->
+    <section id="beneficios" class="section">
+      <div class="grid features">
+        <div class="card"><h3>⚡ Rápido</h3><p class="muted">Resultado em segundos, com explicações objetivas.</p></div>
+        <div class="card"><h3>🛡 Privado</h3><p class="muted">Sem anúncios invasivos ou rastreamento cruzado.</p></div>
+        <div class="card"><h3>🌍 Atualizado</h3><p class="muted">Base de ingredientes e termos monitorada continuamente.</p></div>
+        <div class="card"><h3>🤝 Gratuito para começar</h3><p class="muted">Você testa sem pagar — upgrade só se quiser recursos extras.</p></div>
+      </div>
+    </section>
+
+    <!-- “Demo” ilustrativa -->
+    <section class="section">
+      <div class="card">
+        <h3 style="margin:.2rem 0 .6rem">Como fica a análise</h3>
+        <p class="muted" style="margin-top:0">Exemplo ilustrativo do que você verá após fotografar o rótulo:</p>
+        <div class="grid" style="grid-template-columns: 1fr 1fr;">
+          <div class="card" style="background:#fff;">
+            <h4 style="margin:.1rem 0;">Nome do produto</h4>
+            <ul class="muted">
+              <li>Ingredientes em linguagem simples</li>
+              <li>Possíveis alergênicos destacados</li>
+              <li>Dicas de atenção</li>
+            </ul>
+          </div>
+          <div class="card" style="background:#fff;">
+            <h4 style="margin:.1rem 0;">Exemplos de alertas</h4>
+            <div style="display:flex; gap:.5rem; flex-wrap:wrap;">
+              <span style="display:inline-flex;align-items:center;padding:.35rem .6rem;border-radius:999px;border:1px solid #fecaca;background:#fee2e2;color:#991b1b;">Possui glúten</span>
+              <span style="display:inline-flex;align-items:center;padding:.35rem .6rem;border-radius:999px;border:1px solid #fecaca;background:#fee2e2;color:#991b1b;">Contém leite</span>
+              <span style="display:inline-flex;align-items:center;padding:.35rem .6rem;border-radius:999px;border:1px solid #a7f3d0;background:#ecfdf5;color:#065f46;">Sem soja</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Depoimentos -->
+    <section id="depoimentos" class="section">
+      <h2 style="margin-bottom:1rem; color:#0b1a10">Quem usa, recomenda</h2>
+      <div class="grid testimonials">
+        <figure class="card">
+          <blockquote style="font-size:1.05rem;">“Ficou muito mais fácil entender rótulos no mercado.”</blockquote>
+          <figcaption class="muted">Ana, SP</figcaption>
+        </figure>
+        <figure class="card">
+          <blockquote style="font-size:1.05rem;">“Rápido, objetivo e sem propaganda chata.”</blockquote>
+          <figcaption class="muted">Marcos, DF</figcaption>
+        </figure>
+        <figure class="card">
+          <blockquote style="font-size:1.05rem;">“Os alertas me ajudam a evitar ingredientes que me fazem mal.”</blockquote>
+          <figcaption class="muted">Beatriz, PR</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section" id="baixar">
+      <div class="card" style="display:grid; grid-template-columns: 1fr auto; gap:1rem; align-items:center;">
+        <div>
+          <h3 style="margin:.2rem 0 .3rem">Pronto para experimentar?</h3>
+          <p class="muted">Baixe o Health One e leve a análise por foto no seu bolso.</p>
+        </div>
+        <div class="grid" style="grid-template-columns:auto auto; gap:.75rem;">
+          <a class="btn btn--brand" href="#">App Store</a>
+          <a class="btn" href="#">Google Play</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footbar">
+    <div class="container" style="display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap;">
+      <div class="brand" aria-label="Health One" style="color:#fff">
+        <span class="logo" aria-hidden="true"></span>
+        <span>Health One</span>
+      </div>
+      <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+        <a href="#" style="color:#eef3ec; text-decoration:underline;">Política de Privacidade</a>
+        <a href="#" style="color:#eef3ec; text-decoration:underline;">Termos de Uso</a>
+      </div>
+      <small style="color:#eef3ec"> <span id=""></span> </small>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
